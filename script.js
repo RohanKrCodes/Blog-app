@@ -3,13 +3,28 @@ function createPost() {
   // Get values from input fields
   var title = document.getElementById("title").value;
   var content = document.getElementById("content").value;
-  var imageUrl = document.getElementById("image").value;
+  var imageUrl = document.getElementById("imageUrl").value;
+
+  // Get file input
+  var fileInput = document.getElementById("fileInput");
+  var file = fileInput.files[0];
+  var fileUrl = "";
+
+  // If file is selected, create URL for it
+  if (file) {
+    fileUrl = URL.createObjectURL(file);
+
+    // Show image preview
+    var imagePreview = document.getElementById("imagePreview");
+    imagePreview.src = fileUrl;
+    imagePreview.style.display = "block"; // Show the image preview
+  }
 
   // Create a post object
   var post = {
     title: title,
     content: content,
-    imageUrl: imageUrl,
+    imageUrl: imageUrl || fileUrl, // Use imageUrl if provided, otherwise use fileUrl
   };
 
   // Validate input
@@ -46,7 +61,7 @@ function savePost(post) {
   // Clear input fields
   document.getElementById("title").value = "";
   document.getElementById("content").value = "";
-  document.getElementById("image").value = "";
+  document.getElementById("imageUrl").value = "";
 
   // Refresh the posts display
   displayPosts();
